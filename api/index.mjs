@@ -24,7 +24,7 @@ mongoose
 
 app.use(
   cors({
-    origin: ["https://mern-chat-application-three.vercel.app"],
+    origin: ["https://full-stack-chat-application-front-end.vercel.app"],
     methods: ["POST", "GET", "DELETE", "PATCH"],
     credentials: true,
   })
