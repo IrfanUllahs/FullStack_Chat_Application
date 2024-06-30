@@ -1,0 +1,38 @@
+# Node.js
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+/api/node_modules
+/client/node_modules
+
+# Environment variables
+/api/.env
+/client/.env
+
+# Build directories
+/api/build
+/client/build
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Mac system files
+.DS_Store
+
+# VS Code directory
+.vscode

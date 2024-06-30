@@ -1,0 +1,10 @@
+import express from "express";
+import upload from "../middlewares/multer.js";
+const router = express.Router();
+import User_controller from "../controllers/User_controller.js";
+router.get("/:userId", User_controller.getUser);
+router.get("/getallusers/:currentuserid", User_controller.getUsers);
+router.post("/block/:userId/:blockUserId", User_controller.blockUser);
+router.patch("/unblock/:userId/:unblockUserId", User_controller.unblockUser);
+router.patch("/update/:id", upload.single("file"), User_controller.updateUser);
+export default router;
