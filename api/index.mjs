@@ -24,7 +24,10 @@ mongoose
 
 app.use(
   cors({
-    origin: ["https://full-stack-chat-application-front-end.vercel.app"],
+    origin: [
+      "https://full-stack-chat-application-front-end.vercel.app",
+      "http://localhost:5173",
+    ],
     methods: ["POST", "GET", "DELETE", "PATCH"],
     credentials: true,
   })
