@@ -9,7 +9,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <GoogleOAuthProvider clientId="192673001849-bd4jc63dk02q9q8e14im2a3qrseoj2cf.apps.googleusercontent.com">
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
     <React.StrictMode>
       <Provider store={store}>
         <ChakraProvider>
