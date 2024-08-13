@@ -158,8 +158,9 @@ function Chatwindow() {
   }, [recievedMessage]);
   useEffect(() => {
     socket.on("getMessage", (data) => {
-      if (data.receiverId == currentUser?._id)
+      data.receiverId == user?.userData?._id &&
         dispatch(setRecievedMessage(data));
+      console.log(data);
     });
   });
 

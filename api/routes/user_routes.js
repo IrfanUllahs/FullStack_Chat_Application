@@ -6,5 +6,5 @@ router.get("/:userId", User_controller.getUser);
 router.get("/getallusers/:currentuserid", User_controller.getUsers);
 router.post("/block/:userId/:blockUserId", User_controller.blockUser);
 router.patch("/unblock/:userId/:unblockUserId", User_controller.unblockUser);
-router.patch("/update/:id", upload.single("file"), User_controller.updateUser);
+router.patch("/update/:id", User_controller.updateUser);
 export default router;

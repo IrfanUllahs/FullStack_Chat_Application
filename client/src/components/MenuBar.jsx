@@ -27,9 +27,9 @@ function Messages() {
       <Link to={user && "/profile"}>
         <img
           src={
-            user?.userData?.image?.includes("https://")
-              ? user?.userData?.image // If the image URL already starts with "https://", use it as is
-              : `http://localhost:5000/uploads/${user?.userData?.image}` // Otherwise, construct the full URL
+            user?.userData?.image
+              ? user?.userData?.image
+              : "https://img.freepik.com/premium-photo/3d-avatar-cartoon-character_113255-96804.jpg?w=740"
           }
           alt="profile picture"
           className="rounded-full h-10 w-10"

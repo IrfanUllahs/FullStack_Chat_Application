@@ -110,14 +110,14 @@ export const updateUser = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID format" });
   }
-
+  console.log(req.body);
   try {
     let updateUser = await userModel.findByIdAndUpdate(
       id,
       {
         $set: {
           name: req.body.name,
-          image: req.file?.filename,
+          image: req.body.image,
           lastSeen: req.body.lastSeen,
         },
       },
