@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 import { setUser } from "../redux/features/authSlice";
+import UploadWidget from "../components/UploadWidget";
 const baseURL = import.meta.env.VITE_API_URL;
 function Profile() {
   const user = useSelector((state) => state.auth.user);
@@ -21,40 +22,34 @@ function Profile() {
   const toast = useToast();
 
   const [name, setName] = useState(user?.userData?.name || "");
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(user?.userData?.image || "");
+  const [image, setImage] = useState(user?.userData?.image || "");
 
   useEffect(() => {
-    setName(user?.userData?.name || "");
-    setPreview(user?.userData?.image || "");
-  }, [user]);
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file));
+    if (user) {
+      setName(user?.userData?.name);
+      setImage(user?.userData?.image);
     }
-  };
-
+  }, [user]);
   const handleUpdate = async () => {
     if (name !== user?.userData?.name || image) {
-      const formData = new FormData();
-      formData.append("name", name);
-      if (image) {
-        formData.append("file", image);
-      }
-
       try {
-        let result = await axios.patch(
-          `${baseURL}/api/user/update/${user?.userData?._id}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        let result;
+        if (image) {
+          result = await axios.patch(
+            `${baseURL}/api/user/update/${user?.userData?._id}`,
+            {
+              image,
+            }
+          );
+        }
+        if (name) {
+          result = await axios.patch(
+            `${baseURL}/api/user/update/${user?.userData?._id}`,
+            {
+              name,
+            }
+          );
+        }
 
         let storedUser = JSON.parse(localStorage.getItem("user"));
         storedUser.userData = {
@@ -99,58 +94,54 @@ function Profile() {
   };
 
   return (
-    <Center py={6} px={5} className="bg-[#6E00FF] min-h-screen rounded-lg ">
-      <Box
-        maxW="md"
-        w="full"
-        bg="white"
-        boxShadow="md"
-        rounded="lg"
-        p={{ base: 3, md: 6 }}
-        textAlign="center"
-        className="-green-700 md:mb-0 mb-[150px]"
-      >
-        <Avatar
-          size="xl"
-          src={
-            `http://localhost:5000/uploads/${user?.userData?.image}` || preview
-          }
-          mb={4}
-        />
-        <FormControl id="image" mb={4}>
-          <FormLabel>Profile Image</FormLabel>
-          <Input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            border="0px"
-            borderBottom="1px"
-            rounded="0"
-            fontSize="10px"
+    <div className="flex justify-center items-center min-h-screen bg-[#6E00FF] py-6 px-5">
+      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md  mb-[150px]">
+        <div className="flex items-center justify-center bg-gray-300 rounded-full w-[100px] h-[100px] mx-auto">
+          <img
+            className="w-full h-full object-cover rounded-full mb-4 "
+            src={image}
+            alt="Profile"
           />
-        </FormControl>
-        <FormControl id="name" mb={4}>
-          <FormLabel>Name</FormLabel>
-          <Input
+        </div>
+        <div className="flex items-center justify-center  rounded-full w-[100px] h-[100px] mx-auto">
+          <UploadWidget
+            uwConfig={{
+              cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+              uploadPreset: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+              multiple: false,
+              folder: "profile",
+            }}
+            setImage={setImage}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2" htmlFor="name">
+            Name
+          </label>
+          <input
+            id="name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className="border border-gray-300 rounded py-1 px-2 w-full"
           />
-        </FormControl>
-        <Stack direction="row" spacing={4} align="center" justify="center">
-          <Button colorScheme="teal" onClick={handleUpdate} fontSize="11px">
+        </div>
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={handleUpdate}
+            className="bg-teal-500 text-white px-4 py-2 rounded text-sm"
+          >
             Update Profile
-          </Button>
-          <Button
-            colorScheme="red"
+          </button>
+          <button
             onClick={handleDeleteAccount}
-            fontSize="11px"
+            className="bg-red-500 text-white px-4 py-2 rounded text-sm"
           >
             Delete Account
-          </Button>
-        </Stack>
-      </Box>
-    </Center>
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

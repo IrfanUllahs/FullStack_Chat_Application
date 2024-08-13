@@ -1,5 +1,5 @@
 import userModel from "../model/user_model.js";
-import upload from "../middlewares/multer.js";
+
 import mongoose from "mongoose";
 
 export const getUsers = async (req, res) => {
@@ -117,7 +117,7 @@ export const updateUser = async (req, res) => {
       {
         $set: {
           name: req.body.name,
-          image: req.file?.filename,
+          image: req.body.image,
           lastSeen: req.body.lastSeen,
         },
       },
