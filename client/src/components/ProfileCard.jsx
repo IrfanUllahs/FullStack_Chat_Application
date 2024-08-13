@@ -15,8 +15,7 @@ function ProfileCard({ contactUser }) {
   return (
     <>
       <div
-        className="sm:flex justify-betw  console.log(conversator);
-een  border-b border-[rgb(180,171,171)] pb-2 mt-3  cursor-pointer hover:bg-gray-300 rounded-lg py-1 px-2  hidden"
+        className="sm:flex justify-between  border-b border-[rgb(180,171,171)] pb-2 mt-3  cursor-pointer hover:bg-gray-300 rounded-lg py-1 px-2  hidden"
         onClick={handleClick}
       >
         <div className="flex gap-4 items-center ">

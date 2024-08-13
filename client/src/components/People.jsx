@@ -4,7 +4,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 function People({ searchParam }) {
-  console.log(searchParam);
   const users = useSelector((state) => state.auth.users);
   let searchUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchParam.toLowerCase())

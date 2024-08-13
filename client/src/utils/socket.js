@@ -1,12 +1,12 @@
-// // utils/socket.js
-// import { io } from "socket.io-client";
+// utils/socket.js
+import { io } from "socket.io-client";
 
-// export const socket = io("ws://localhost:8900");
+export const socket = io("ws://localhost:8900");
 
-// export const initializeSocket = () => {
-//   socket.connect();
-// };
+export const initializeSocket = () => {
+  socket.connect();
+};
 
-// export const disconnectSocket = () => {
-//   socket.disconnect();
-// };
+export const disconnectSocket = () => {
+  socket.disconnect();
+};

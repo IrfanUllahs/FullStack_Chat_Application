@@ -37,13 +37,11 @@ function Message() {
 
   const handleseenUpdate = async (userId) => {
     let lastSeen = Date.now();
-    console.log("Attempting to update last seen...");
 
     try {
       let result = await axios.patch(`${baseURL}/api/user/update/${userId}`, {
         lastSeen,
       });
-      console.log("Last seen updated successfully:", result.data);
     } catch (error) {
       console.log("Error updating last seen:", error);
     }

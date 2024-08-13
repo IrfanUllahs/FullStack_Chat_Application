@@ -16,7 +16,7 @@ function Auth() {
     onSuccess: (codeResponse) => setUser(codeResponse),
     onError: (error) => console.log("Login Failed:", error),
   });
-axios.defaults.withcredentials = true
+  axios.defaults.withcredentials = true;
   useEffect(() => {
     if (user) {
       axios
@@ -48,7 +48,6 @@ axios.defaults.withcredentials = true
     }
   }, [user]);
 
-  // log out function to log the user out of google and set the profile array to null
   const logOut = () => {
     googleLogout();
     setProfile(null);

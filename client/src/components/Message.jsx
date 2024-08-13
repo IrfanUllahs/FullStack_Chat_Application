@@ -13,7 +13,7 @@ function Message({ own, message }) {
       let result = await axios.delete(
         `${baseURL}/api/message/delete/${message._id}`
       );
-      console.log(result.data);
+
       toast.success(result.data.message);
       dispatch(deleteMessage(message._id));
     } catch (error) {

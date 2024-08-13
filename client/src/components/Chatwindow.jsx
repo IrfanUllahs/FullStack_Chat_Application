@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { IoCallOutline } from "react-icons/io5";
 import { IoVideocamOutline } from "react-icons/io5";
 import { FaLocationArrow } from "react-icons/fa";
-// import { socket } from "../utils/socket";
+import { socket } from "../utils/socket";
 import Search from "./Search";
 import People from "./People";
 import { useSelector, useDispatch } from "react-redux";
@@ -52,14 +52,14 @@ function Chatwindow() {
     receiverId: currentUser?._id,
     text: "",
   });
-  // useEffect(() => {
-  //   if (user?.userData?._id) {
-  //     socket.emit("add user", user?.userData?._id);
-  //     socket.on("get users", (users) => {
-  //       console.log(users);
-  //     });
-  //   }
-  // }, [user?.userData]);
+  useEffect(() => {
+    if (user?.userData?._id) {
+      socket.emit("add user", user?.userData?._id);
+      socket.on("get users", (users) => {
+        console.log(users);
+      });
+    }
+  }, [user?.userData]);
   useEffect(() => {
     if (user?.userData?._id) {
       setdata((prev) => ({ ...prev, senderId: user?.userData?._id }));
@@ -90,7 +90,6 @@ function Chatwindow() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        console.log("first");
         let result = await axios.get(`${baseURL}/api/user/${id}`);
 
         dispatch(setCurrentUser(result.data));
@@ -147,7 +146,7 @@ function Chatwindow() {
   };
   useEffect(() => {
     if (sendMessages !== null) {
-      // socket.emit("sendMessage", sendMessages);
+      socket.emit("sendMessage", sendMessages);
       console.log(sendMessages);
     }
   }, [sendMessages]);
@@ -157,6 +156,13 @@ function Chatwindow() {
       dispatch(setMessageinRedux(recievedMessage));
     }
   }, [recievedMessage]);
+  useEffect(() => {
+    socket.on("getMessage", (data) => {
+      if (data.receiverId == currentUser?._id)
+        dispatch(setRecievedMessage(data));
+    });
+  });
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -216,20 +222,20 @@ function Chatwindow() {
       toast.error(error.response.data.message);
     }
   };
-  // useEffect(() => {
-  //   if (currentUser?._id) {
-  //     socket.emit("handleblock", {
-  //       id: currentUser?._id,
-  //       isBlockedbyMe,
-  //     });
-  //   }
-  // }, [isBlockedbyMe]);
-  // useEffect(() => {
-  //   socket.on("blockOrUnblock", (user) => {
-  //     dispatch(setIsBlockedbyHim(user));
-  //     console.log(user);
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (currentUser?._id) {
+      socket.emit("handleblock", {
+        id: currentUser?._id,
+        isBlockedbyMe,
+      });
+    }
+  }, [isBlockedbyMe]);
+  useEffect(() => {
+    socket.on("blockOrUnblock", (user) => {
+      dispatch(setIsBlockedbyHim(user));
+      console.log(user);
+    });
+  }, []);
   useEffect(() => {
     const auth = localStorage.getItem("user");
 
@@ -313,7 +319,6 @@ function Chatwindow() {
                 >
                   <Message
                     message={message}
-                    key={message._id}
                     own={message.senderId == user?.userData?._id}
                   />
                 </div>

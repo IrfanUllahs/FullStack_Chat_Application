@@ -59,7 +59,6 @@ const messageSlice = createSlice({
       state.messages = [...state.messages, action.payload];
     },
     setSendMessage: (state, action) => {
-      console.log(action.payload);
       state.sendMessages = action.payload;
     },
     clearMessages: (state, action) => {
