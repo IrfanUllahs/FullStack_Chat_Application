@@ -23,6 +23,7 @@ function Profile() {
 
   const [name, setName] = useState(user?.userData?.name || "");
   const [image, setImage] = useState(user?.userData?.image || "");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -33,6 +34,7 @@ function Profile() {
   const handleUpdate = async () => {
     if (name !== user?.userData?.name || image) {
       try {
+        setIsLoading(true);
         let result;
         if (image) {
           result = await axios.patch(
@@ -64,6 +66,7 @@ function Profile() {
           duration: 3000,
           isClosable: true,
         });
+        setIsLoading(false);
       } catch (error) {
         toast({
           title: "Error in updating",
@@ -72,6 +75,7 @@ function Profile() {
           isClosable: true,
         });
         console.log(error.response.data.message);
+        setIsLoading(false);
       }
     } else {
       toast({
@@ -131,7 +135,7 @@ function Profile() {
             onClick={handleUpdate}
             className="bg-teal-500 text-white px-4 py-2 rounded text-sm"
           >
-            Update Profile
+            {isLoading ? "Updating..." : "Update Profile"}
           </button>
           <button
             onClick={handleDeleteAccount}
