@@ -33,7 +33,7 @@ const baseURL = import.meta.env.VITE_API_URL;
 function Chatwindow() {
   const [searchParam, setSearchParam] = useState("");
   const [isError, setIsError] = useState("");
-  const [isLoading, setIsLoading] = useState("");
+
   const isBlockedbyMe = useSelector((state) => state.auth.isBlockedbyMe);
   const isBlockedbyHim = useSelector((state) => state.auth.isBlockedbyHim);
   const scrollRef = useRef();
@@ -43,6 +43,8 @@ function Chatwindow() {
   let recievedMessage = useSelector((state) => state.message.recievedMessage);
   let messages = useSelector((state) => state.message.messages);
   let sendMessages = useSelector((state) => state.message.sendMessages);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+  const messageLoading = useSelector((state) => state.message.isLoading);
 
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -244,7 +246,13 @@ function Chatwindow() {
         {user && (
           <>
             <Search setSearchParam={setSearchParam} />
-            <People searchParam={searchParam} />
+            {isLoading ? (
+              <h1 className="text-[#303030] font-semibold text-[17px] text-center mt-[40px]">
+                Loading...
+              </h1>
+            ) : (
+              <People searchParam={searchParam} />
+            )}
           </>
         )}
       </div>
@@ -255,11 +263,7 @@ function Chatwindow() {
           <div className="flex justify-between border-b border-[#B4ABAB] pb-4   ">
             <div className="flex items-center gap-4">
               <img
-                src={
-                  currentUser?.image?.includes("https://")
-                    ? currentUser?.image // If the image URL already starts with "https://", use it as is
-                    : `http://localhost:5000/uploads/${currentUser?.image}` // Otherwise, construct the full URL
-                }
+                src={currentUser?.image}
                 alt="profile picture"
                 className="rounded-full sm:h-12 sm:w-12 w-9 h-9"
               />
@@ -304,6 +308,10 @@ function Chatwindow() {
                   you is blocked by Him
                 </span>
               )
+            ) : messageLoading ? (
+              <h1 className="text-[#303030] font-semibold text-[17px] text-center mt-[40px]">
+                Loading...
+              </h1>
             ) : (
               messages?.map((message) => (
                 <div

@@ -11,7 +11,7 @@ const baseURL = import.meta.env.VITE_API_URL;
 import axios from "axios";
 function Message() {
   const [searchParam, setSearchParam] = useState("");
-
+  const isLoading = useSelector((state) => state.auth.isLoading);
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
 
@@ -60,7 +60,13 @@ function Message() {
         {user && (
           <>
             <Search setSearchParam={setSearchParam} />
-            <People searchParam={searchParam} />
+            {isLoading ? (
+              <h1 className="text-[#303030] font-semibold text-[17px] text-center mt-[40px]">
+                Loading...
+              </h1>
+            ) : (
+              <People searchParam={searchParam} />
+            )}
           </>
         )}
       </div>
